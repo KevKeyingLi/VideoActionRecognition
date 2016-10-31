@@ -16,7 +16,7 @@ from operator import itemgetter
 
 T_THRD = float(1)/3
 
-def temporal_distance(nodeA, nodeB):
+def temporal_distance(nodeA, nodeB, other):
     
     # Larger means more overlap: 0-1, simply percentage of the window
     if nodeA.videoname != nodeB.videoname:
@@ -43,7 +43,7 @@ def temporal_distance(nodeA, nodeB):
 def feature_distance(nodeA, nodeB, sigma = 2000):
 #     l2_norm_2 = reduce(lambda x, y: x+y, [x**2 for x in nodeA.histogram - nodeB.histogram])
     l2_norm = np.linalg.norm(nodeA.histogram - nodeB.histogram)
-    return math.exp(-(l2_norm/(2 * sigma))**2)
+    return math.exp(-(l2_norm/(sigma))**2/2)
 
 def build_edge(node_list, distance_function, sigma = 2000, k=10): # top K
     i = 0
@@ -86,12 +86,28 @@ def build_edge(node_list, distance_function, sigma = 2000, k=10): # top K
         writeLog("Finished node %d after %.2f seconds."%(i,time.time()-t))
         i += 1
     if distance_function == feature_distance:
-        print "sorting"
+    	# make symmetric
+        make_symmetric(adj_list)
+        # print "sorting"
         i = 0
         for edges in adj_list:
             adj_list[i] = sorted(edges, key=itemgetter(1))
             i +=1
+
     return adj_list
+
+def make_symmetric(adj_list):
+	t = time.time()
+	i = 0
+	for node in adj_list:
+		for edge in node:
+			j = edge[1]
+			if i not in [ e[1] for e in adj_list[j] ]:
+				adj_list[j].append((edge[0],i))
+		i += 1
+	print("make_symmetric taking %.2f secs" % (time.time()-t))
+	return
+
 
 def writeLog(msg):
     msg = str(datetime.datetime.now()) + ':   ' + msg;
@@ -118,19 +134,23 @@ if __name__ == "__main__":
 	# time.time()-t
 	writeLog("Load pickle file in %.2f secondes. "% (time.time() - t))
 	
-	feature_startT = time.time()
-	t = time.time()
-	# adj_list =[]
-	adj_list = build_edge(node_list, feature_distance, sigma = 2000, k= 7)
-	writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
-	t = time.time()
-	cPickle.dump( adj_list, open( BASE_DIR + "adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
-	writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
-	t = time.time() - feature_startT
-	m, s = divmod(t, 60)
-	h, m = divmod(m, 60)
-	writeLog("Feature edges finished after %02d:%02d:%02d" % (h, m, s)) # 14.753661871 0.0874960422516
+	# feature_startT = time.time()
+	# t = time.time()
+	# # adj_list =[]
+	# adj_list = build_edge(node_list, feature_distance, sigma = 2000, k= 7)
+	# writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
+	# t = time.time()
+	# cPickle.dump( adj_list, open( BASE_DIR + "adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
+	# writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
+	# t = time.time() - feature_startT
+	# m, s = divmod(t, 60)
+	# h, m = divmod(m, 60)
+	# writeLog("Feature edges finished after %02d:%02d:%02d" % (h, m, s)) # 14.753661871 0.0874960422516
 	
+# 2016-10-31 11:37:45.191174:   Generate edges took 3330.18 secondes. 
+# 2016-10-31 11:37:45.373308:   write to file took 0.18 seconds
+# 2016-10-31 11:37:45.374234:   Feature edges finished after 00:55:30
+
 	feature_startT = time.time()
 	t = time.time()
 	# adj_list =[]
