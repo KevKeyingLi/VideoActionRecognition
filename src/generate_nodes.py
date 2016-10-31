@@ -158,7 +158,7 @@ if __name__ == "__main__":
 		print("Start generate node for the "+str(i)+"th video of Validation data" )
 		video_tLabelList = [x for x in tLabelList if x[0]==video_info[0][0]]
 		t = time.time()
-		temp_node_list = generateNode(video_info, video_tLabelList, BASE_DIR)#, 100, 50)
+		temp_node_list = generateNode(video_info, video_tLabelList, BASE_DIR)#,0.5 , 100, 50)
 		writeLog('Node generation of validation data '+video_info[0][0]+ ' took %.2f seconds'% (time.time()-t) )
 		node_list = node_list + temp_node_list
 		i += 1
