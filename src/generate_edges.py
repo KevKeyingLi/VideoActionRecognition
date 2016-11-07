@@ -134,18 +134,18 @@ if __name__ == "__main__":
 	# time.time()-t
 	writeLog("Load pickle file in %.2f secondes. "% (time.time() - t))
 	
-	# feature_startT = time.time()
-	# t = time.time()
-	# # adj_list =[]
-	# adj_list = build_edge(node_list, feature_distance, sigma = 2000, k= 7)
-	# writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
-	# t = time.time()
-	# cPickle.dump( adj_list, open( BASE_DIR + "adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
-	# writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
-	# t = time.time() - feature_startT
-	# m, s = divmod(t, 60)
-	# h, m = divmod(m, 60)
-	# writeLog("Feature edges finished after %02d:%02d:%02d" % (h, m, s)) # 14.753661871 0.0874960422516
+	feature_startT = time.time()
+	t = time.time()
+	# adj_list =[]
+	adj_list = build_edge(node_list, feature_distance, sigma = 2000, k= 7)
+	writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
+	t = time.time()
+	cPickle.dump( adj_list, open( BASE_DIR + "adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
+	writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
+	t = time.time() - feature_startT
+	m, s = divmod(t, 60)
+	h, m = divmod(m, 60)
+	writeLog("Feature edges finished after %02d:%02d:%02d" % (h, m, s)) # 14.753661871 0.0874960422516
 	
 # 2016-10-31 11:37:45.191174:   Generate edges took 3330.18 secondes. 
 # 2016-10-31 11:37:45.373308:   write to file took 0.18 seconds
