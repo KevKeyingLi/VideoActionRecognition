@@ -22,7 +22,7 @@ def writeLog(msg):
 
 if __name__ == "__main__":
 	startT = time.time()
-	BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
+	BASE_DIR = '/data/UCF/data/Thumos/iDTF/'#'/Users/baroc/repos/VideoActionRecognition/'
 	logFileLoc = BASE_DIR+'generate_test_node.log'
 	# if this file is imported as a module this part will not be run, since the __name__ will be the module name.
 	if not os.path.exists(os.path.dirname(BASE_DIR)):
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 	            tLabels = f.readlines()
 	        tLabels = [x[:-1].split('  ') for x in tLabels]
 	        tLabels = [[x[0],map(float, x[1].split(' '))] for x in tLabels]
-	        tLabels = [x+[filename[:-8]] for x in tLabels]
+	        tLabels = [x+[filename[:-9]] for x in tLabels]
 	        test_tLabelList = test_tLabelList+tLabels
 	    else:
 	        print('Not a txt file: '+filename)
