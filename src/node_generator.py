@@ -103,8 +103,12 @@ def generateNode(video_info, video_tLabelList, FEATURE_DIR, traj_coverage_threas
     # generate nodes for a video, return a list of Node
     # before calling this function, require to find the video_info and video_tLabelList for this video. 
     video_name = video_info[0][0]
-    duration_frame = video_info[8][0][0]
-    fps = float(video_info[9][0])
+    if 'validation' in video_name:
+        duration_frame = video_info[8][0][0]
+        fps = float(video_info[9][0][0])
+    elif 'test' in video_name:
+        duration_frame = int(video_info[5][0][0]*video_info[7][0][0])
+        fps = float(video_info[7][0][0])
     # read in the file and form a list of trajectory features
     with open(FEATURE_DIR+video_name+'.txt','r') as f:
         # later: make the directory as a variable
