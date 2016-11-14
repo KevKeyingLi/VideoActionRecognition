@@ -65,7 +65,8 @@ if __name__ == "__main__":
 		writeLog('Node generation of validation data '+video_info[0][0]+ ' took %.2f seconds'% (time.time()-t) )
 		node_list = node_list + temp_node_list
 		i += 1
-	
+	for i,node in enumerate(node_list):
+        node.set_id(i)
 	t = time.time()
 	cPickle.dump( node_list, open( BASE_DIR+"validation_video_nodes.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	print(time.time()-t) 

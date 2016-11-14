@@ -208,8 +208,6 @@ def generateNode(video_info, video_tLabelList, FEATURE_DIR, traj_coverage_threas
         # Add this node into a list. 
         node_list.append(new_node) 
     # return the list of nodes
-    for i,node in enumerate(node_list):
-        node.set_id(i)
     return node_list
 
 
