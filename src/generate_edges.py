@@ -14,10 +14,9 @@ import math
 import heapq as pq
 from operator import itemgetter
 
-T_THRD = float(1)/3
+T_THRD = 0 #float(1)/3
 
 def temporal_distance(nodeA, nodeB, other):
-    
     # Larger means more overlap: 0-1, simply percentage of the window
     if nodeA.videoname != nodeB.videoname:
     	return 0
@@ -35,8 +34,11 @@ def temporal_distance(nodeA, nodeB, other):
     else:
         lend = nodeA.end
         send = nodeB.end
+    # IOU
+    IOU = float(send - lstart)/(lend - sstart)
+    return IOU if IOU >0 else 0
     # return float(send - lstart)/(nodeA.end - nodeA.start)
-    return float(nodeA.end - nodeA.start)/(lend - sstart)
+    # return float(nodeA.end - nodeA.start)/(lend - sstart)
     # else:
     #     return 0
 
@@ -134,6 +136,10 @@ if __name__ == "__main__":
 	# time.time()-t
 	writeLog("Load pickle file in %.2f secondes. "% (time.time() - t))
 	
+
+
+
+# Generate edges using similarity
 	feature_startT = time.time()
 	t = time.time()
 	# adj_list =[]
@@ -150,6 +156,7 @@ if __name__ == "__main__":
 # 2016-10-31 11:37:45.191174:   Generate edges took 3330.18 secondes. 
 # 2016-10-31 11:37:45.373308:   write to file took 0.18 seconds
 # 2016-10-31 11:37:45.374234:   Feature edges finished after 00:55:30
+# generate edge usign temporal info
 
 	feature_startT = time.time()
 	t = time.time()
