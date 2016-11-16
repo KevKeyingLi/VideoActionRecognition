@@ -63,7 +63,8 @@ if __name__ == "__main__":
 		writeLog('Node generation of test data '+video_info[0][0]+ ' took %.2f seconds'% (time.time()-t) )
 		test_node_list = test_node_list + temp_test_node_list
 		i += 1
-	
+	for i,node in enumerate(node_list):
+        node.set_id(i)
 	t = time.time()
 	cPickle.dump( test_node_list, open( BASE_DIR+"test_video_nodes.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	print(time.time()-t) 
