@@ -122,13 +122,14 @@ def writeLog(msg):
 if __name__ == "__main__":
 	startT = time.time()
 	BASE_DIR = '/data/UCF/data/Thumos/iDTF/'#'/Users/baroc/repos/VideoActionRecognition/'
+	OUTPUT_DIR = BASE_DIR+'Keying/'
 	logFileLoc = BASE_DIR+'generate_edges.log'
 	# if this file is imported as a module this part will not be run, since the __name__ will be the module name.
-	if not os.path.exists(os.path.dirname(BASE_DIR)):
-		print("Please change BASE_DIR in the code.")
+	if not os.path.exists(os.path.dirname(OUTPUT_DIR)):
+		print("Please change OUTPUT_DIR in the code.")
 		exit()
 	# Load pickle
-	cPFile = open(BASE_DIR+"test_video_nodes.p", 'rb')
+	cPFile = open(OUTPUT_DIR+"test_video_nodes.p", 'rb')
 	t = time.time()
 	node_list = cPickle.load(cPFile)
 	# time.time()-t
@@ -140,7 +141,7 @@ if __name__ == "__main__":
 	adj_list = build_edge(node_list, feature_distance, sigma = 2000, k= 7)
 	writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
 	t = time.time()
-	cPickle.dump( adj_list, open( BASE_DIR + "test_adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
+	cPickle.dump( adj_list, open( OUTPUT_DIR + "test_adj_list_by_feature_k_7_sigma_2000.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
 	t = time.time() - feature_startT
 	m, s = divmod(t, 60)
@@ -157,7 +158,7 @@ if __name__ == "__main__":
 	adj_list = build_edge(node_list, temporal_distance)
 	writeLog("Generate edges took %.2f secondes. "% (time.time() - t))
 	t = time.time()
-	cPickle.dump( adj_list, open( BASE_DIR + "test_adj_list_by_temporal.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
+	cPickle.dump( adj_list, open( OUTPUT_DIR + "test_adj_list_by_temporal.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	writeLog("write to file took %.2f seconds"% (time.time()-t)) # 14.753661871 0.0874960422516
 	t = time.time()-feature_startT
 	m, s = divmod(t, 60)

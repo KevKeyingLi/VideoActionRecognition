@@ -23,7 +23,8 @@ def writeLog(msg):
 if __name__ == "__main__":
 	startT = time.time()
 	BASE_DIR = '/data/UCF/data/Thumos/iDTF/'#'/Users/baroc/repos/VideoActionRecognition/'
-	logFileLoc = BASE_DIR+'generate_graph.log'
+	OUTPUT_DIR = BASE_DIR+'Keying/'
+	logFileLoc = BASE_DIR+'generate_node_val.log'
 	# if this file is imported as a module this part will not be run, since the __name__ will be the module name.
 	if not os.path.exists(os.path.dirname(BASE_DIR)):
 		print("Please change BASE_DIR in the code.")
@@ -68,7 +69,7 @@ if __name__ == "__main__":
 	for i,node in enumerate(node_list):
         node.set_id(i)
 	t = time.time()
-	cPickle.dump( node_list, open( BASE_DIR+"validation_video_nodes.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
+	cPickle.dump( node_list, open( OUTPUT_DIR+"validation_video_nodes.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	print(time.time()-t) 
 
 	endT = time.time()
