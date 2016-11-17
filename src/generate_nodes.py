@@ -67,7 +67,7 @@ if __name__ == "__main__":
 		node_list = node_list + temp_node_list
 		i += 1
 	for i,node in enumerate(node_list):
-        node.set_id(i)
+		node.set_id(i)
 	t = time.time()
 	cPickle.dump( node_list, open( OUTPUT_DIR+"validation_video_nodes.p", "wb" ), protocol=cPickle.HIGHEST_PROTOCOL )
 	print(time.time()-t) 
