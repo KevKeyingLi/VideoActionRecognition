@@ -45,7 +45,7 @@ def temporal_distance(nodeA, nodeB, other):
 def feature_distance(nodeA, nodeB, sigma = 2000):
 #     l2_norm_2 = reduce(lambda x, y: x+y, [x**2 for x in nodeA.histogram - nodeB.histogram])
     l2_norm = np.linalg.norm(nodeA.histogram - nodeB.histogram)
-    return math.exp(-(l2_norm/(sigma))**2/2)
+    return math.exp(-(l2_norm/(sigma))**2)
 
 def build_edge(node_list, distance_function, sigma = 2000, k=10): # top K
     i = 0
