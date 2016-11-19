@@ -93,7 +93,30 @@ They
 
 
 
+## Dense Trajectories and motion boundary descriptors for action recognition
 
+**Abstract** 
+* Dense trajectory:
+    - Trajectories: capture local motion information of the video
+    - A dense representation guarentees a good coverage of foreground motion as well as of the surrounding context. 
+    - A state-of-the-art optical flow algorithm enables a robust and efficient extraction of dense trajectories.
+* As descriptors
+    - features aligned with the trajectories to characterize
+        + shape： point coordinates
+        + appearance: histograms of oriented gradients
+        + motions: histogram of optical flow
+    - Introduce a descriptor based on motion boundary histograms (MBH) which rely on differential optical flow
+        + The MBH descriptor shows to consistently outperform other state-of-the-art descriptors, in particular on real-world videos that contain a **significant amount of camera motion**.
+
+### Intro
+* Local space-time features are a successful representation for action recognition. 
+* **However, the 2D space domain and 1D time domain in videos show different characteristics.** It is, therefore, more intuitive to handle them in a different manner than to detect interest points in a joint 3D space. **Tracking interest points through video sequences is a straightforward choice.** Existing methods:
+    - Either, tracking techniques based on KLT tracker(sparse tracking)
+    - Or, SIFT descriptors between consecutive frames are matched.
+    - Or, combined both approaches and added random trajectories in low density regions of both trackers in order to increase density.
+* **Dense sampling** has shown to improve results over sparse interest points for image classification. In action recognition, dense sampling at regular positions in space and time also outperforms state-of-the-art spatio-temporal interest point detectors. *In this work, we propose to sample feature points on a dense grid in each frame and track them using a state-of-the-art dense optical flow algorithm.*
+* To reduce the influence of **camera motion** on **action recognition**, we introduce a descriptor based on motion boundaries, initially developed in the context of human detection. 
+    - Motion boundaries are computed by a **derivative operation on the optical flow field**. **Thus, motion due to locally translational camera movement is canceled out and relative motion is captured** (see Figure 5). We show that motion boundaries provide a robust descriptor for action recognition that significantly outperforms existing state- of-the-art descriptors.
 
 
 
