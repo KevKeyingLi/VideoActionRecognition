@@ -72,18 +72,6 @@ if __name__ == "__main__":
 
 	endT = time.time()
 	writeLog("*** \n\nNode generation finished, generated %d nodes in total, time elapsed %.2f seconds" % (len(test_node_list),endT-startT) )
-	# cPFile = open(BASE_DIR+"test_video_nodes.p", 'rb')
-	# t = time.time()
-	# cP = cPickle.load(cPFile)
-	# print(time.time()-t)
-	# cPFile.close()
-
-
-
-
-
-
-
 
 
 
