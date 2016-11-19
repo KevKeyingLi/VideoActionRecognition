@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+from scipy import io as sio
 
 class Node:
     def __init__(self, start, end, fps, videoname):
@@ -39,7 +39,8 @@ class Node:
             self.labels.append(tlabel_info[2]) # it is possible that there are multiple same label for a node.
     def record_feature(self): 
         ###########
-        # this method currently counts all existence, and don't take into account the coverage of each trajectory
+        # this method is not used currently
+        # counts all existence, and don't take into account the coverage of each trajectory
         # if need the coverage info in the future, can simply modify to:
         # self.feature_cnt['mean_x'].append([traj.mean_x,traj.coverage])
         
@@ -79,8 +80,9 @@ class Trajectory:
         self.coverage = coverage # The portion of trajectory included in the window
 
 
+
 def computeOverlap(window_start, window_end, label_start, label_end):
-    
+    IOU
     if window_start < label_end and label_start < window_end:
         # overlap
         if window_start > label_start:
@@ -209,5 +211,76 @@ def generateNode(video_info, video_tLabelList, FEATURE_DIR, traj_coverage_threas
         node_list.append(new_node) 
     # return the list of nodes
     return node_list
+
+{
+        '': 1,
+        'b': 2,
+}[x]
+
+label_index_UCF = {
+'BaseballPitch':7,
+'BasketballDunk':9,
+'Billiards':12,
+'CleanAndJerk':21,
+'CliffDiving':22,
+'CricketBowling':23,
+'CricketShot':24,
+'Diving':26,
+'FrisbeeCatch':31,
+'GolfSwing':33,
+'HammerThrow':36,
+'HighJump':40,
+'JavelinThrow':45,
+'LongJump':51,
+'PoleVault':68,
+'Shotput':79,
+'SoccerPenalty':85,
+'TennisSwing':92,
+'ThrowDiscus':93,
+'VolleyballSpiking':97
+}
+
+label_index_21 = {
+'BaseballPitch':0,'BasketballDunk':1,'Billiards':2,'CleanAndJerk':3,'CliffDiving':4,'CricketBowling':5,'CricketShot':6,'Diving':7,'FrisbeeCatch':8,'GolfSwing':9,'HammerThrow':10,'HighJump':11,'JavelinThrow':12,'LongJump':13,'PoleVault':14,'Shotput':15,'SoccerPenalty':16,'TennisSwing':17,'ThrowDiscus':18,'VolleyballSpiking':19,'Ambiguous':20
+}
+
+def export_mat(node_list, item_list, mat_files):
+# item_list is a list of what to output
+#   namely: 'feature', 'label'
+# mat_files is a list of directories to out put,
+#   It is the same size of the item_list
+    item_num = len(item_list)
+    if item_num != len(mat_files):
+        print("Bad parameters for export_mat, size of item_list and mat_files does not match. ")
+        return 
+    node_num = len(node_list)
+    arrays = dict()
+    for item in item_list:
+        if item == 'label':
+            arrays[item] =  np.zeros([len(node_list),21])
+        elif: item == 'feature':
+            arrays[item] =  np.zeros([len(node_list),16000])
+        else:
+            item_list.remove(item)
+            print("No such item, removed!")
+    if 'label' in item_list:
+        #
+        i = 0
+        for node in node_list:
+            for label in node.labels:
+                OL_Label_List = node.allOverLapLabels[label]
+                # print(max(OL_Label_List, key = lambda x : x[1]))
+                arrays['label'][i][label_index_21[label]] = max(OL_Label_List, key = lambda x : x[1])[1]
+            i += 1
+    if 'feature' in item_list:
+        i = 0
+        for node in node_list:
+            arrays['feature'][i] = node.histogram
+            i += 1
+    for i in range(len(item_list)):
+        sio.savemat(mat_files[i], {item_list[i]+'_matrix':arrays[item_list[i]]});
+    return
+
+
 
 
