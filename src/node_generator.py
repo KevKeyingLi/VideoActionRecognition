@@ -212,10 +212,6 @@ def generateNode(video_info, video_tLabelList, FEATURE_DIR, traj_coverage_threas
     # return the list of nodes
     return node_list
 
-{
-        '': 1,
-        'b': 2,
-}[x]
 
 label_index_UCF = {
 'BaseballPitch':7,
@@ -258,7 +254,7 @@ def export_mat(node_list, item_list, mat_files):
     for item in item_list:
         if item == 'label':
             arrays[item] =  np.zeros([len(node_list),21])
-        elif: item == 'feature':
+        elif item == 'feature':
             arrays[item] =  np.zeros([len(node_list),16000])
         else:
             item_list.remove(item)
