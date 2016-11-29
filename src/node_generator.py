@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from scipy import io as sio
-
+import time
 class Node:
     def __init__(self, start, end, fps, videoname):
         self.id = 0;
@@ -240,7 +240,7 @@ label_index_21 = {
 'BaseballPitch':0,'BasketballDunk':1,'Billiards':2,'CleanAndJerk':3,'CliffDiving':4,'CricketBowling':5,'CricketShot':6,'Diving':7,'FrisbeeCatch':8,'GolfSwing':9,'HammerThrow':10,'HighJump':11,'JavelinThrow':12,'LongJump':13,'PoleVault':14,'Shotput':15,'SoccerPenalty':16,'TennisSwing':17,'ThrowDiscus':18,'VolleyballSpiking':19,'Ambiguous':20
 }
 
-def export_mat(node_list, item_list, mat_files):
+def export_mat(node_list, item_list, mat_files, segment_list):
 # item_list is a list of what to output
 #   namely: 'feature', 'label'
 # mat_files is a list of directories to out put,
@@ -253,9 +253,9 @@ def export_mat(node_list, item_list, mat_files):
     arrays = dict()
     for item in item_list:
         if item == 'label':
-            arrays[item] =  np.zeros([len(node_list),21])
+            arrays[item] =  np.zeros([len(node_list),21],dtype='uint32')
         elif item == 'feature':
-            arrays[item] =  np.zeros([len(node_list),16000])
+            arrays[item] =  np.zeros([len(node_list),16000],dtype='uint32')
         else:
             item_list.remove(item)
             print("No such item, removed!")
@@ -271,10 +271,31 @@ def export_mat(node_list, item_list, mat_files):
     if 'feature' in item_list:
         i = 0
         for node in node_list:
-            arrays['feature'][i] = node.histogram
+            arrays['feature'][i] = node.histogram.astype('uint32')
             i += 1
     for i in range(len(item_list)):
-        sio.savemat(mat_files[i], {item_list[i]+'_matrix':arrays[item_list[i]]});
+        t = time.time()
+        block = len(node_list)/segment_list[i]+1
+        seg = range(0,len(node_list),block)
+        j = 0
+        while(j<len(seg)):
+            if j == len(seg)-1:
+                start = seg[j]
+                end = len(node_list)
+            else:
+                start = seg[j]
+                end = seg[j+1]
+            print('start '+str(j)+', '+str(start))
+            print('end '+str(j)+', '+str(end))
+            try:
+                sio.savemat(mat_files[i]+'_'+str(j)+'.mat', {item_list[i]+'_matrix_'+str(j):arrays[item_list[i]][start:end]})
+                print('Finished No.'+str(j)+' of '+item_list[i]+', from '+str(start)+' to '+str(end))
+            except Exception, e:
+                print('Exception occur when generating mat file for '+item_list[i]+' No.'+str(j))
+                print(e)
+            finally:
+                j += 1
+        print('Finished '+item_list[i]+' after %.2f' %(time.time()-t))
     return
 
 
