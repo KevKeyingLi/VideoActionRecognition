@@ -31,5 +31,5 @@ node_list = cPickle.load(cPFile)
 # time.time()-t
 writeLog("Load pickle file in %.2f secondes. "% (time.time() - t))
 t = time.time()
-export_mat(node_list, ['label','feature'], [OUTPUT_DIR+'validation_node_labels.mat',OUTPUT_DIR+'validation_node_features.mat'],[1,1])
+export_mat(node_list, ['label','feature'], [OUTPUT_DIR+'validation_node_labels',OUTPUT_DIR+'validation_node_features'],[1,1])
 writeLog("Finish both matrices in %.2f secondes. "% (time.time() - t))

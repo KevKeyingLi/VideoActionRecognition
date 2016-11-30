@@ -234,11 +234,11 @@ label_index_UCF = {
 'TennisSwing':92,
 'ThrowDiscus':93,
 'VolleyballSpiking':97
-}
+}# This is predefined
 
 label_index_21 = {
 'BaseballPitch':0,'BasketballDunk':1,'Billiards':2,'CleanAndJerk':3,'CliffDiving':4,'CricketBowling':5,'CricketShot':6,'Diving':7,'FrisbeeCatch':8,'GolfSwing':9,'HammerThrow':10,'HighJump':11,'JavelinThrow':12,'LongJump':13,'PoleVault':14,'Shotput':15,'SoccerPenalty':16,'TennisSwing':17,'ThrowDiscus':18,'VolleyballSpiking':19,'Ambiguous':20
-}
+}# This is selfdefined
 
 def export_mat(node_list, item_list, mat_files, segment_list):
 # item_list is a list of what to output
@@ -253,7 +253,7 @@ def export_mat(node_list, item_list, mat_files, segment_list):
     arrays = dict()
     for item in item_list:
         if item == 'label':
-            arrays[item] =  np.zeros([len(node_list),21],dtype='uint32')
+            arrays[item] =  np.zeros([len(node_list),21])
         elif item == 'feature':
             arrays[item] =  np.zeros([len(node_list),16000],dtype='uint32')
         else:
@@ -297,7 +297,3 @@ def export_mat(node_list, item_list, mat_files, segment_list):
                 j += 1
         print('Finished '+item_list[i]+' after %.2f' %(time.time()-t))
     return
-
-
-
-
