@@ -23,6 +23,7 @@ if __name__ == "__main__":
 	cPFile = open(OUTPUT_DIR+"test_video_nodes.p", 'rb')
 	t = time.time()
 	node_list = cPickle.load(cPFile)
+	
 	# time.time()-t
 	writeLog("Load pickle file in %.2f secondes. "% (time.time() - t))
 	
