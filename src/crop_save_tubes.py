@@ -42,7 +42,7 @@ def crop_frames(video_path,start,end,avgsel,img_output_dir,image_list):
 			# print([y1-1,y2,x1-1,x2])
 			cropped_list.append(cropped_frame)
 			save_image(img_output_dir+str(frame_idx)+'.png',cropped_frame)
-			image_list,append(img_output_dir+str(frame_idx)+'.png')
+			image_list.append(img_output_dir+str(frame_idx)+'.png')
 		elif frame_idx > end:
 			break
 		frame_idx += 1
