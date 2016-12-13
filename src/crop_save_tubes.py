@@ -65,7 +65,7 @@ for key in scales[0]:
 	print(key)
 	for i in range(2):
 		tubes = scales[i][key]
-		print('Video '+key+' has '+str(len(tubes))+' tubes.')
+		print('Video '+key+' scale '+str(i)+' has '+str(len(tubes))+' tubes.')
 		j = 0
 		for tube in tubes:
 			j+= 1
