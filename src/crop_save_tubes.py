@@ -2,6 +2,8 @@ import cv2
 import numpy
 import cPickle
 import time
+import os
+import datetime
 
 def writeLog(msg):
 	msg = str(datetime.datetime.now()) + ':   ' + msg;
@@ -51,13 +53,12 @@ def crop_frames(video_path,start,end,avgsel,img_output_dir):
 # video directory: '/data/UCF/data/Thumos/Videos/UCF101'
 # 92612999952032581035060556
 
-
-
+logFileLoc = '/data/UCF/data/Thumos/iDTF/Keying/cropped_tubes/crop_log.log'
 tube_file = '/data/UCF/data/Thumos/iDTF/Keying/output/tubes.p'
-
+writeLog('Start loading the tubes from pickle file')
 t = time.time()
 scales = cPickle.load(open(tube_file,'rb'))
-print(time.time()- t) # 157.41545105s
+writeLog('Finished loading the tubes after %.2f seconds' %(time.time()- t) )# 157.41545105s
 video_dir = '/data/UCF/data/Thumos/Videos/UCF101/'
 img_output_dir = '/data/UCF/data/Thumos/iDTF/Keying/cropped_tubes/'
 for key in scales[0]:
@@ -73,7 +74,7 @@ for key in scales[0]:
 			end = tube['end']# inclusive
 			avgsel = tube['avgsel']
 			frames = crop_frames(video_dir+key+'.avi',start,end,avgsel,img_output_dir+'scale_'+str(i)+'/'+str(key)+'/'+str(j)+'/')
-
+writeLog('Finished')
 		# out put two scales into different directories.
 
 
