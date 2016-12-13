@@ -54,6 +54,7 @@ def crop_frames(video_path,start,end,avgsel,img_output_dir):
 
 
 tube_file = '/data/UCF/data/Thumos/iDTF/Keying/output/tubes.p'
+
 t = time.time()
 scales = cPickle.load(open(tube_file,'rb'))
 print(time.time()- t) # 157.41545105s
@@ -67,6 +68,7 @@ for key in scales[0]:
 		j = 0
 		for tube in tubes:
 			j+= 1
+			print('\t Tube %d' %j)
 			start = tube['start']
 			end = tube['end']# inclusive
 			avgsel = tube['avgsel']
