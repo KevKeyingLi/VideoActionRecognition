@@ -70,11 +70,14 @@ for key in scales[0]:
 	print(key)
 	for i in range(2):
 		tubes = scales[i][key]
+		if not tubes:
+			writeLog('Bad tubes: '+str(key))
+			break
 		print('Video '+key+' scale '+str(i)+' has '+str(len(tubes))+' tubes.')
 		j = 0
 		for tube in tubes:
 			j+= 1
-			print('\t Tube %d' %j)
+			# print('\t Tube %d' %j)
 			start = tube['start']
 			end = tube['end']# inclusive
 			avgsel = tube['avgsel']
