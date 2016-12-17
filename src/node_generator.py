@@ -242,7 +242,7 @@ label_index_21 = {
 
 def export_mat(node_list, item_list, mat_files, segment_list):
 # item_list is a list of what to output
-#   namely: 'feature', 'label'
+#   namely: 'feature', 'label' 
 # mat_files is a list of directories to out put,
 #   It is the same size of the item_list
     item_num = len(item_list)
@@ -297,3 +297,30 @@ def export_mat(node_list, item_list, mat_files, segment_list):
                 j += 1
         print('Finished '+item_list[i]+' after %.2f' %(time.time()-t))
     return
+def get_tLabel(BASE_DIR,is_validation):
+    BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
+    if is_validation:
+        TLBL_DIR = BASE_DIR + 'TH14_Temporal_annotations_validation/annotation/'
+    else:
+        TLBL_DIR = BASE_DIR + 'TH14_Temporal_Annotations_Test/annotations/annotation/'
+    filelist = os.listdir(TLBL_DIR)
+    tLabelList = []
+    if is_validation:
+        filetail = "_val.txt"
+    else:
+        filetail = "_test.txt"
+    for filename in filelist:
+        if filename.endswith(filetail): 
+            with open(TLBL_DIR+filename,'r') as f:
+                tLabels = f.readlines()
+            tLabels = [x[:-1].split('  ') for x in tLabels]
+            tLabels = [[x[0],map(float, x[1].split(' '))] for x in tLabels]
+            tLabels = [x+[filename[:-8]] for x in tLabels]
+            tLabelList = tLabelList+tLabels
+        else:
+            print('Not a txt file: '+filename)
+    tLabelList = sorted(tLabelList)
+    return tLabelList
+
+def attach_label(window_list):
+
