@@ -82,7 +82,7 @@ class Trajectory:
 
 
 def computeOverlap(window_start, window_end, label_start, label_end):
-    IOU
+    # IOU
     if window_start < label_end and label_start < window_end:
         # overlap
         if window_start > label_start:
@@ -300,7 +300,7 @@ def export_mat(node_list, item_list, mat_files, segment_list):
 def load_tLabel(BASE_DIR,is_validation):
     # BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
     if is_validation:
-        TLBL_DIR = BASE_DIR + 'TH14_Temporal_annotations_validation/annotation/'
+        TLBL_DIR = BASE_DIR + 'TH14_Temporal_annotations_validation/annotation/' # directory for validation annotation
     else:
         TLBL_DIR = BASE_DIR + 'TH14_Temporal_Annotations_Test/annotations/annotation/'
     filelist = os.listdir(TLBL_DIR)
@@ -321,6 +321,21 @@ def load_tLabel(BASE_DIR,is_validation):
             print('Not a txt file: '+filename)
     tLabelList = sorted(tLabelList)
     return tLabelList
+def load_video_meta(BASE_DIR,tLabelList,is_validation):
+    # not that the meta data for test data and validation data have different data format, 
+    # this code currently only work with validation data
+    if is_validation:
+        mat_file_str = BASE_DIR + "validation_set_meta/validation_set_meta/validation_set.mat"
+        key_name = 'validation_videos'
+    else:
+        mat_file_str = BASE_DIR+"test_set_meta.mat"
+        key_name = 'test_videos'
+        print('THis function does not work for test data yet, look at generate_nodes_test.py line 54~70')
+    mat = sio.loadmat(mat_file_str)
+    meta_array_1010 = mat[key_name][0] # 1010 entries in meta_array
+    id_list = [int(x[-7:])-1 for x in videonames] # a list of zero based indices
+    meta_array_200 = meta_array_1010[id_list]
+    return meta_array_200
 
 
 def reformat_tLabel_to_dict(tLabelList):
@@ -334,5 +349,7 @@ def reformat_tLabel_to_dict(tLabelList):
     return tLabelDict
 
 
-def attach_label(window_list):
+def attach_label(window_list, tLabelList):
+    tLabelDict = reformat_tLabel_to_dict(tLabelList)
+    for window in 
 
