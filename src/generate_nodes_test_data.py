@@ -30,7 +30,7 @@ if __name__ == "__main__":
 		print("Please change BASE_DIR in the code.")
 		exit()
 	
-	# load the temporal list
+	# load the temporal list # obsolete, please use the function get_tLabel in node_generator
 	TEST_TLBL_DIR = BASE_DIR+'TH14_Temporal_Annotations_Test/annotations/annotation/' #'./''
 	test_filelist = os.listdir(TEST_TLBL_DIR)
 	test_tLabelList = []
