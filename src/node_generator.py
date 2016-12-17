@@ -297,8 +297,8 @@ def export_mat(node_list, item_list, mat_files, segment_list):
                 j += 1
         print('Finished '+item_list[i]+' after %.2f' %(time.time()-t))
     return
-def get_tLabel(BASE_DIR,is_validation):
-    BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
+def load_tLabel(BASE_DIR,is_validation):
+    # BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
     if is_validation:
         TLBL_DIR = BASE_DIR + 'TH14_Temporal_annotations_validation/annotation/'
     else:
@@ -321,6 +321,18 @@ def get_tLabel(BASE_DIR,is_validation):
             print('Not a txt file: '+filename)
     tLabelList = sorted(tLabelList)
     return tLabelList
+
+
+def reformat_tLabel_to_dict(tLabelList):
+    tLabelDict = dict()
+    for label in tLabelList:
+        if label[0] in tLabelDict:
+            tLabelDict[label[0]].append((label[1],label[2]))
+        else:
+            tLabelDict[label[0]] = list()
+            tLabelDict[label[0]].append((label[1],label[2]))
+    return tLabelDict
+
 
 def attach_label(window_list):
 
