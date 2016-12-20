@@ -321,7 +321,8 @@ def load_tLabel(BASE_DIR,is_validation):
             print('Not a txt file: '+filename)
     tLabelList = sorted(tLabelList)
     return tLabelList
-def load_video_meta(BASE_DIR,tLabelList,is_validation):
+
+def load_video_meta_dict(BASE_DIR,tLabelList,is_validation):
     # not that the meta data for test data and validation data have different data format, 
     # this code currently only work with validation data
     if is_validation:
@@ -333,9 +334,10 @@ def load_video_meta(BASE_DIR,tLabelList,is_validation):
         print('THis function does not work for test data yet, look at generate_nodes_test.py line 54~70')
     mat = sio.loadmat(mat_file_str)
     meta_array_1010 = mat[key_name][0] # 1010 entries in meta_array
+    videonames = sorted(list(set([x[0] for x in tLabelList])))
     id_list = [int(x[-7:])-1 for x in videonames] # a list of zero based indices
     meta_array_200 = meta_array_1010[id_list]
-    return meta_array_200
+    return dict([[x[0][0],x] for x in meta_array_200])
 
 
 def reformat_tLabel_to_dict(tLabelList):
@@ -349,7 +351,28 @@ def reformat_tLabel_to_dict(tLabelList):
     return tLabelDict
 
 
-def attach_label(window_list, tLabelList):
+def attach_label(window_list, tLabelList, meta_dict):
     tLabelDict = reformat_tLabel_to_dict(tLabelList)
-    for window in 
+    node_labels =  np.zeros([len(window_list),21])
+    i = 0
+    for window in window_list:
+        if '/' in window[0]:
+            video_name = window[0][window[0].rfind('/')+1:]
+        else:
+            video_name = window[0]
+        if video_name not in meta_dict:
+            print('This video %s does not have a temporal label' % video_name)
+            continue
+        fps = meta_dict[video_name][9][0][0]
+        for labels in tLabelDict[video_name]:
+            if float(window[1])/fps >= labels[0][0] and float(window[2])/fps <= labels[0][1]:
+                print(str(float(window[1])/fps)+' '+str(float(window[2]+1)/fps)+':')
+                print(labels)
+                label = labels[1]# the label string
+                node_labels[i][label_index_21[label]] = 1
+            # The following two lines are a optimization
+            # elif float(window[2])/fps > labels[1][1]:
+            #     break
+    i += 1
+    return node_labels
 
