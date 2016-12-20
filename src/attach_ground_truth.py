@@ -1,15 +1,20 @@
 import os
 import numpy as np
-from node_generator import attach_label,load_tLabel,load_video_meta
+from node_generator import attach_ground_truth
 
-
+def load_window_list():
+	return generate_test_window_list()
+def generate_test_window_list():
+	l = list()
+	for i in range(300):
+		l.append(('video_validation_0000051',i*16,(i+1)*16-1))
+	return l
 
 
 BASE_DIR = '/Users/baroc/repos/VideoActionRecognition/'
-tLabelList = load_tLabel(BASE_DIR,True)
 window_list = load_window_list()# window list is a list of tupels(videopathname, start frame, end frame)
-meta_dict = load_video_meta_dict(BASE_DIR,tLabelList,True)
-labels = attach_label(window_list, tLabelList, meta_dict)
+labels = attach_ground_truth(BASE_DIR, window_list, True):  # High level interface containing all the detail funcitonalities in one
+
 # videonames = sorted(list(set([x[0] for x in tLabelList])))
 # tLabelList:
 # [['video_validation_0000051', [67.5, 75.9], 'Billiards'],
@@ -23,10 +28,3 @@ labels = attach_label(window_list, tLabelList, meta_dict)
 #  ['video_validation_0000162', [155.8, 158.5], 'Diving'],
 #  ['video_validation_0000162', [163.0, 164.0], 'Ambiguous'],
 #  ['video_validation_0000162', [164.1, 167.1], 'CliffDiving']...]
-def load_window_list():
-	return generate_test_window_list()
-def generate_test_window_list():
-	l = list()
-	for i in range(300):
-		l.append(('video_validation_0000051',i*16,(i+1)*16-1))
-	return l
