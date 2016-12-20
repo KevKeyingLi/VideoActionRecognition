@@ -366,8 +366,8 @@ def attach_label(window_list, tLabelList, meta_dict):
         fps = meta_dict[video_name][9][0][0]
         for labels in tLabelDict[video_name]:
             if float(window[1])/fps >= labels[0][0] and float(window[2])/fps <= labels[0][1]:
-                print(str(float(window[1])/fps)+' '+str(float(window[2]+1)/fps)+':')
-                print(labels)
+                # print(str(float(window[1])/fps)+' '+str(float(window[2]+1)/fps)+':')
+                # print(labels)
                 label = labels[1]# the label string
                 node_labels[i][label_index_21[label]] = 1
             # The following two lines are a optimization
@@ -375,4 +375,7 @@ def attach_label(window_list, tLabelList, meta_dict):
             #     break
     i += 1
     return node_labels
-
+def attach_ground_truth(BASE_DIR, window_list, is_validation):  # High level interface containing all the detail funcitonalities in one
+    tLabelList = load_tLabel(BASE_DIR,is_validation)
+    meta_dict = load_video_meta_dict(BASE_DIR,tLabelList,is_validation)
+    labels = attach_label(window_list, tLabelList, meta_dict)
