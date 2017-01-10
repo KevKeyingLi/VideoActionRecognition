@@ -336,6 +336,7 @@ def load_video_meta_dict(BASE_DIR,tLabelList,is_validation):
     meta_array_1010 = mat[key_name][0] # 1010 entries in meta_array
     videonames = sorted(list(set([x[0] for x in tLabelList])))
     id_list = [int(x[-7:])-1 for x in videonames] # a list of zero based indices
+    # -7 is test_validation sensitive.
     meta_array_200 = meta_array_1010[id_list]
     return dict([[x[0][0],x] for x in meta_array_200])
 
@@ -363,7 +364,7 @@ def attach_label(window_list, tLabelList, meta_dict):
         if video_name not in meta_dict:
             print('This video %s does not have a temporal label' % video_name)
             continue
-        fps = meta_dict[video_name][9][0][0]
+        fps = meta_dict[video_name][9][0][0] # 9 is test_validation sensitive.
         for labels in tLabelDict[video_name]:
             if float(window[1])/fps >= labels[0][0] and float(window[2])/fps <= labels[0][1]:
                 # print(str(float(window[1])/fps)+' '+str(float(window[2]+1)/fps)+':')
